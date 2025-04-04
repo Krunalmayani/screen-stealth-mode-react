@@ -56,11 +56,19 @@ const StealthModeGuide = () => {
       </div>
 
       <div className="mt-16 max-w-4xl mx-auto bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800">
-        <h3 className="text-xl font-semibold text-blue-800 dark:text-blue-300 mb-3">Why this works:</h3>
-        <p className="text-gray-700 dark:text-gray-300">
-          By selecting "Application Window" instead of "Entire Screen", you prevent participants from seeing notifications, private messages, 
-          sensitive documents, and other applications that may be running on your desktop. The video conference attendees will only see the 
-          specific window you choose to share.
+        <h3 className="text-xl font-semibold text-blue-800 dark:text-blue-300 mb-3">How AI-Assisted Screen Sharing Works:</h3>
+        <p className="text-gray-700 dark:text-gray-300 mb-4">
+          Our application functions similarly to platforms like InterviewCoder, where:
+        </p>
+        <ul className="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
+          <li>Only your shared screen content is visible to other participants</li>
+          <li>The video conferencing UI and other participants' video feeds are not shown</li>
+          <li>AI assistance provides communication support without requiring video of the other person</li>
+          <li>You maintain complete privacy while sharing only essential content with your audience</li>
+        </ul>
+        <p className="mt-4 text-gray-700 dark:text-gray-300">
+          This approach creates a distraction-free environment focused solely on the content being shared, 
+          while providing AI-powered assistance to facilitate communication without requiring video feeds.
         </p>
       </div>
     </section>
