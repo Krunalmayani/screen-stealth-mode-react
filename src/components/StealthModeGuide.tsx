@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Monitor, Window, EyeOff } from "lucide-react";
+import { Check, Monitor, FileText, EyeOff } from "lucide-react";
 
 const StealthModeGuide = () => {
   const steps = [
@@ -14,7 +14,7 @@ const StealthModeGuide = () => {
       id: 2,
       title: "Click 'Share Screen'",
       description: "Look for the share screen button in your video conferencing app",
-      icon: <Window className="w-6 h-6 text-blue-600" />
+      icon: <FileText className="w-6 h-6 text-blue-600" />
     },
     {
       id: 3,
