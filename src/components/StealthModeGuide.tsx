@@ -1,32 +1,32 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Monitor, FileText, EyeOff } from "lucide-react";
+import { Check, Monitor, FileText, EyeOff, Bot } from "lucide-react";
 
 const StealthModeGuide = () => {
   const steps = [
     {
       id: 1,
-      title: "Open your video conferencing app",
-      description: "Start Google Meet, Zoom, Microsoft Teams, or any other supported application",
+      title: "Open our app in a Chrome tab",
+      description: "Start by opening Screen Stealth Mode in a Chrome browser tab",
       icon: <Monitor className="w-6 h-6 text-blue-600" />
     },
     {
       id: 2,
-      title: "Click 'Share Screen'",
-      description: "Look for the share screen button in your video conferencing app",
+      title: "Click 'Start AI-Assisted Screen Sharing'",
+      description: "Use our button to activate AI-assisted screen sharing mode",
       icon: <FileText className="w-6 h-6 text-blue-600" />
     },
     {
       id: 3,
-      title: "Select 'Application Window'",
-      description: "Choose to share a specific window rather than your entire screen",
+      title: "Select 'Chrome Tab'",
+      description: "Choose to share a specific Chrome tab rather than your entire screen",
       icon: <EyeOff className="w-6 h-6 text-blue-600" />
     },
     {
       id: 4,
-      title: "Share only what you need",
-      description: "Select the specific application window you want others to see",
-      icon: <Check className="w-6 h-6 text-blue-600" />
+      title: "Enjoy private communication",
+      description: "AI assistance helps with communication without showing video conferencing UI",
+      icon: <Bot className="w-6 h-6 text-blue-600" />
     }
   ];
 
@@ -35,7 +35,7 @@ const StealthModeGuide = () => {
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">How Screen Stealth Works</h2>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Follow these simple steps to keep your desktop private during video conferences
+          Follow these simple steps to keep your video conferencing private
         </p>
       </div>
 

@@ -1,8 +1,8 @@
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import AppHeader from "@/components/AppHeader";
 import StealthModeGuide from "@/components/StealthModeGuide";
+import ScreenShareMode from "@/components/ScreenShareMode";
 import CompatibleApps from "@/components/CompatibleApps";
 import PrivacyBenefits from "@/components/PrivacyBenefits";
 import Footer from "@/components/Footer";
@@ -30,6 +30,7 @@ const Index = () => {
           </div>
         </section>
 
+        <ScreenShareMode />
         <StealthModeGuide />
         <CompatibleApps />
         <PrivacyBenefits />
