@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,12 +11,9 @@ const ScreenShareMode = () => {
   
   const startScreenSharing = async () => {
     try {
-      // Request screen capture
+      // Request screen capture with corrected type constraints
       const mediaStream = await navigator.mediaDevices.getDisplayMedia({
-        video: {
-          cursor: "always",
-          displaySurface: "application",
-        },
+        video: true,
         audio: false,
       });
       
