@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Monitor, MessageSquare, Share2 } from "lucide-react";
+import { Monitor, MessageSquare, Share2, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const ScreenShareMode = () => {
   const [isSharing, setIsSharing] = useState(false);
   const { toast } = useToast();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
   
   const startScreenSharing = async () => {
     try {
@@ -17,7 +20,14 @@ const ScreenShareMode = () => {
         audio: false,
       });
       
-      // Set up screen sharing
+      // Store the stream for later cleanup
+      setStream(mediaStream);
+      
+      // Set up screen sharing and display in video element
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+      }
+      
       setIsSharing(true);
       
       // Show success toast
@@ -30,12 +40,7 @@ const ScreenShareMode = () => {
       // Handle when user stops sharing
       const track = mediaStream.getVideoTracks()[0];
       track.onended = () => {
-        setIsSharing(false);
-        toast({
-          title: "Screen sharing ended",
-          description: "You've stopped sharing your screen",
-          duration: 3000,
-        });
+        stopScreenSharing();
       };
     } catch (err) {
       console.error("Error sharing screen:", err);
@@ -47,6 +52,33 @@ const ScreenShareMode = () => {
       });
     }
   };
+
+  const stopScreenSharing = () => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      setStream(null);
+    }
+    
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    
+    setIsSharing(false);
+    toast({
+      title: "Screen sharing ended",
+      description: "You've stopped sharing your screen",
+      duration: 3000,
+    });
+  };
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [stream]);
 
   return (
     <section id="screen-share" className="py-16 bg-blue-50/50 dark:bg-blue-950/20 rounded-xl my-12">
@@ -104,38 +136,56 @@ const ScreenShareMode = () => {
         </Card>
       </div>
 
-      <div className="flex justify-center mt-12">
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2">
-              <MessageSquare className="h-5 w-5" />
-              Start AI-Assisted Screen Sharing
+      {isSharing ? (
+        <div className="mt-12 max-w-4xl mx-auto">
+          <div className="relative bg-black rounded-lg overflow-hidden shadow-xl">
+            <video 
+              ref={videoRef} 
+              autoPlay 
+              playsInline 
+              className="w-full h-auto aspect-video object-contain"
+            />
+            <Button 
+              onClick={stopScreenSharing}
+              variant="destructive"
+              size="sm"
+              className="absolute top-2 right-2 p-2 h-auto"
+            >
+              <X className="h-5 w-5" />
             </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Ready to share your screen?</AlertDialogTitle>
-              <AlertDialogDescription>
-                When you continue, you'll be prompted to select a window or tab to share. 
-                Only the selected content will be visible to participants, not your entire desktop 
-                or video conferencing interface.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={startScreenSharing}>
-                Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
-
-      {isSharing && (
-        <div className="mt-8 max-w-xl mx-auto bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800 text-center">
-          <p className="text-green-800 dark:text-green-300 font-medium">
-            Screen sharing is active in stealth mode. Only your selected window is visible to participants.
-          </p>
+          </div>
+          <div className="mt-4 bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800 text-center">
+            <p className="text-green-800 dark:text-green-300 font-medium">
+              Screen sharing is active in stealth mode. Only your selected window is visible to participants.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex justify-center mt-12">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Start AI-Assisted Screen Sharing
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Ready to share your screen?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  When you continue, you'll be prompted to select a window or tab to share. 
+                  Only the selected content will be visible to participants, not your entire desktop 
+                  or video conferencing interface.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={startScreenSharing}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       )}
     </section>
